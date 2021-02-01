@@ -125,18 +125,40 @@ dataOdierna: new Date(),
     aggiungiMessaggio: function(){
       let mex = this.nuovoMessaggio;
       let data = this.dataOdierna;
-      let giorno = data.getDate() + '/' + data.getMonth() + 1 + '/' + data.getFullYear();
-      let ora = data.getHours() + ':' + data.getMinutes();
+      let giorno = data.getDate();
+      if(giorno < 10){
+        giorno = '0' + giorno;
+      }
+      let mese = data.getMonth() +1;
+      if(mese < 10){
+        mese = '0' + mese;
+      }
+      let today = giorno + '/' + mese + '/' + data.getFullYear();
+      let ora = data.getHours();
+      if(ora < 10){
+        ora = '0' + ora;
+      }
+      let minuti = data.getMinutes();
+      if(minuti < 10){
+        minuti = '0' + minuti;
+      }
       this.contacts.forEach((item) => {
         if(item.visible === true){
           item.messages.push({
-            date: giorno + ' ' + ora,
+            date: today + ' ' + ora + ':' + minuti,
             text: mex,
             status: 'sent',
           })
         }
         this.nuovoMessaggio = '';
       });
+    },
+    excerpt: function(text, n1, n2 = 0){
+      if(text.length > n1){
+        return text.slice(0, n1) + '...'
+      }else{
+        return text
+      }
     }
   },
 

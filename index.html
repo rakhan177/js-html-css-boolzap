@@ -43,7 +43,11 @@
                 <div>
                   <img class="avatar" :src="'img/avatar' + utenti.avatar + '.jpg'" alt="">
                 </div>
-                <div>{{utenti.name}}</div>
+                <div>
+                  <div class="altri-utenti-nome"><span>{{utenti.name}}</span><span>{{utenti.messages[utenti.messages.length - 1].date.slice(11, 16)}}</span></div>
+                  <div class="altri-utenti-mex">{{excerpt(utenti.messages[utenti.messages.length-1].text, 35)}}</div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -67,7 +71,7 @@
               <div v-for="(prop, ind) in contacts" v-if="prop.visible === true">
                 <div v-for="(mex, ind) in prop.messages" :class="mex.status">
                   {{mex.text}}
-                  <span>{{mex.date}}</span>
+                  <span>{{mex.date.slice(11,16)}}</span>
                 </div>
               </div>
             </div>
