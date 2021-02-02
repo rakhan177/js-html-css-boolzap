@@ -126,34 +126,38 @@ dataOdierna: new Date(),
       let mex = this.nuovoMessaggio;
       let data = this.dataOdierna;
       let giorno = data.getDate();
-      if(giorno < 10){
-        giorno = '0' + giorno;
-      }
       let mese = data.getMonth() +1;
-      if(mese < 10){
-        mese = '0' + mese;
-      }
-      let today = giorno + '/' + mese + '/' + data.getFullYear();
       let ora = data.getHours();
-      if(ora < 10){
-        ora = '0' + ora;
-      }
       let minuti = data.getMinutes();
-      if(minuti < 10){
-        minuti = '0' + minuti;
+      let array = [];
+      array.push(giorno, mese, ora, minuti);
+      for(let x = 0; x < array.length; x++){
+        if(array[x] < 10){
+          array[x] = '0' + array[x];
+        }
       }
+      let today = array[0] + '/' + array[1] + '/' + data.getFullYear() + ' ' + array[2] + ':' + array[3];
       this.contacts.forEach((item) => {
         if(item.visible === true){
           item.messages.push({
-            date: today + ' ' + ora + ':' + minuti,
+            date: today,
             text: mex,
             status: 'sent',
           })
         }
         this.nuovoMessaggio = '';
+        setTimeout(function(){
+          if(item.visible === true){
+            item.messages.push({
+              date: today,
+              text: 'ok',
+              status: 'received',
+            })
+          }
+        }, 1000);
       });
     },
-    excerpt: function(text, n1, n2 = 0){
+    excerpt: function(text, n1){
       if(text.length > n1){
         return text.slice(0, n1) + '...'
       }else{
@@ -161,7 +165,5 @@ dataOdierna: new Date(),
       }
     }
   },
-
-
 })
 Vue.config.devtools = true;
