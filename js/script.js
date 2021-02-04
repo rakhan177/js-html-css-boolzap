@@ -9,6 +9,7 @@ const app = new Vue({
         name: 'Michele',
         avatar: '_1',
         visible: true,
+        selected: true,
         ultimoAccesso: '16:15',
         messages: [
             {
@@ -32,6 +33,7 @@ const app = new Vue({
         name: 'Fabio',
         avatar: '_2',
         visible: false,
+        selected: true,
         ultimoAccesso: '16:35',
         messages: [
             {
@@ -55,6 +57,7 @@ const app = new Vue({
         name: 'Samuele',
         avatar: '_3',
         visible: false,
+        selected: true,
         ultimoAccesso: '17:45',
         messages: [
             {
@@ -78,6 +81,7 @@ const app = new Vue({
         name: 'Luisa',
         avatar: '_6',
         visible: false,
+        selected: true,
         ultimoAccesso: '15:50',
         messages: [
             {
@@ -114,6 +118,7 @@ icone: {
 },
 nuovoMessaggio: '',
 dataOdierna: new Date(),
+ricerca: '',
   },
   methods: {
     attivaUtente: function(index){
@@ -122,8 +127,7 @@ dataOdierna: new Date(),
       });
       this.contacts[index].visible = true;
     },
-    aggiungiMessaggio: function(){
-      let mex = this.nuovoMessaggio;
+    createDate: function(){
       let data = this.dataOdierna;
       let giorno = data.getDate();
       let mese = data.getMonth() +1;
@@ -137,32 +141,52 @@ dataOdierna: new Date(),
         }
       }
       let today = array[0] + '/' + array[1] + '/' + data.getFullYear() + ' ' + array[2] + ':' + array[3];
+      return today;
+    },
+    aggiungiMessaggio: function(){
+      let mex = this.nuovoMessaggio;
       this.contacts.forEach((item) => {
         if(item.visible === true){
           item.messages.push({
-            date: today,
+            date: this.createDate(),
             text: mex,
             status: 'sent',
           })
         }
         this.nuovoMessaggio = '';
-        setTimeout(function(){
-          if(item.visible === true){
-            item.messages.push({
-              date: today,
-              text: 'ok',
-              status: 'received',
-            })
-          }
-        }, 1000);
+        this.aggiungiRisposta(item);
+      })
+    },
+    filtroAmici: function() {
+      this.contacts.forEach((element) => {
+        if(element.name.toLowerCase().startsWith(this.ricerca.toLowerCase())){
+          element.selected = true;
+        }else{
+          element.selected = false;
+        }
       });
     },
-    excerpt: function(text, n1){
+    aggiungiRisposta: function(elem){
+      let that = this;
+      setTimeout(function(){
+        if(elem.visible === true){
+          elem.messages.push({
+            date: that.createDate(),
+            text: 'ok',
+            status: 'received',
+          })
+        }
+      }, 1000);
+    },
+    addSpread: function(text, n1){
       if(text.length > n1){
         return text.slice(0, n1) + '...'
       }else{
         return text
       }
+    },
+    sliceText: function(text, n1, n2){
+      return text.slice(n1, n2)
     }
   },
 })
