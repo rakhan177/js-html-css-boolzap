@@ -1,7 +1,5 @@
 const app = new Vue({
-  // inizio app
   el: '#root',
-  // sezione dati
   data: {
     // contatti
     contacts: [
@@ -127,22 +125,6 @@ ricerca: '',
       });
       this.contacts[index].visible = true;
     },
-    createDate: function(){
-      let data = this.dataOdierna;
-      let giorno = data.getDate();
-      let mese = data.getMonth() +1;
-      let ora = data.getHours();
-      let minuti = data.getMinutes();
-      let array = [];
-      array.push(giorno, mese, ora, minuti);
-      for(let x = 0; x < array.length; x++){
-        if(array[x] < 10){
-          array[x] = '0' + array[x];
-        }
-      }
-      let today = array[0] + '/' + array[1] + '/' + data.getFullYear() + ' ' + array[2] + ':' + array[3];
-      return today;
-    },
     aggiungiMessaggio: function(){
       let mex = this.nuovoMessaggio;
       this.contacts.forEach((item) => {
@@ -157,15 +139,6 @@ ricerca: '',
         this.aggiungiRisposta(item);
       })
     },
-    filtroAmici: function() {
-      this.contacts.forEach((element) => {
-        if(element.name.toLowerCase().startsWith(this.ricerca.toLowerCase())){
-          element.selected = true;
-        }else{
-          element.selected = false;
-        }
-      });
-    },
     aggiungiRisposta: function(elem){
       let that = this;
       setTimeout(function(){
@@ -178,6 +151,27 @@ ricerca: '',
         }
       }, 1000);
     },
+    filtroAmici: function() {
+      this.contacts.forEach((element) => {
+        if(element.name.toLowerCase().startsWith(this.ricerca.toLowerCase())){
+          element.selected = true;
+        }else{
+          element.selected = false;
+        }
+      });
+    },
+    createDate: function(){
+      let data = this.dataOdierna;
+      let array = [];
+      array.push(data.getDate(), data.getMonth() +1, data.getHours(), data.getMinutes());
+      for(let x = 0; x < array.length; x++){
+        if(array[x] < 10){
+          array[x] = '0' + array[x];
+        }
+      }
+      let today = array[0] + '/' + array[1] + '/' + data.getFullYear() + ' ' + array[2] + ':' + array[3];
+      return today;
+    },
     addSpread: function(text, n1){
       if(text.length > n1){
         return text.slice(0, n1) + '...'
@@ -188,6 +182,6 @@ ricerca: '',
     sliceText: function(text, n1, n2){
       return text.slice(n1, n2)
     }
-  },
+  }
 })
 Vue.config.devtools = true;

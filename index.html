@@ -1,60 +1,69 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>BOOLZAPP</title>
+    <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
-    <link rel="stylesheet" href="css/style.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div id="root">
 
-      <div class="container">
-        <div class="container-app">
+      <div class="container flex flex-align-center">
+        <div class="container-app clearfix">
+          <!-- nav -->
+          <nav class="fl">
 
-          <div class="sidebar">
-            <div class="mio-utente">
-              <div class="mio-utente-left">
+            <div class="mio-utente flex">
+              <div class="mio-utente-left flex">
                 <img :src="'img/avatar' + mio_utente.avatar.url + '.jpg'" :alt="mio_utente.avatar.alt" class="avatar">
-                <span class="white">{{mio_utente.name}} {{mio_utente.surname}}</span>
+                <span>{{mio_utente.name}} {{mio_utente.surname}}</span>
               </div>
-              <div class="mio-utente-right">
+              <div class="mio-utente-right flex">
                 <i :class="icone.circle"></i>
                 <i :class="icone.mex"></i>
                 <i :class="icone.setting"></i>
               </div>
             </div>
+
             <div class="alert-notifiche">
               <div class="icona-notifica-off">
                 <i :class="icone.alarm_off"></i>
               </div>
               <div class="icona-notifica-text">
                 Ricevi notifiche di nuovi messaggi.<br>
-                <a href="">Attiva notifiche desktop</a>
+                <a href="" class="small-size">Attiva notifiche desktop</a>
               </div>
             </div>
-            <div class="search-input">
-              <i :class="icone.search"></i>
+
+            <div class="search-input flex">
+              <i :class="icone.search" class="small-size"></i>
               <input type="text" placeholder="Cerca o inizia una nuova chat" v-model="ricerca" @keyup="filtroAmici">
             </div>
+
             <div class="message">
-              <div v-for="(utenti, i) in contacts" class="altri-utenti" v-if="utenti.selected === true" @click="attivaUtente(i)">
-                <div>
+              <div v-for="(utenti, i) in contacts" class="altri-utenti clearfix" v-if="utenti.selected === true" @click="attivaUtente(i)">
+                <div class="fl flex">
                   <img class="avatar" :src="'img/avatar' + utenti.avatar + '.jpg'" alt="">
                 </div>
-                <div>
-                  <div class="altri-utenti-nome"><span>{{utenti.name}}</span><span>{{sliceText(utenti.messages[utenti.messages.length - 1].date, 11, 16)}}</span></div>
-                  <div class="altri-utenti-mex">{{addSpread(utenti.messages[utenti.messages.length-1].text, 35)}}</div>
+                <div class="fl flex">
+                  <div class="altri-utenti-nome flex"><span>{{utenti.name}}</span><span class="small-size">{{sliceText(utenti.messages[utenti.messages.length - 1].date, 11, 16)}}</span></div>
+                  <div class="altri-utenti-mex small-size">{{addSpread(utenti.messages[utenti.messages.length-1].text, 35)}}</div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="main">
-            <div class="open-chat">
-              <div class="open-chat-left" v-for="(contatti, index) in contacts" v-if="contatti.visible === true">
+          </nav>
+          <!-- / nav -->
+          <!-- main -->
+          <main class="fl">
+
+            <div class="open-chat flex">
+              <div class="open-chat-left flex" v-for="(contatti, index) in contacts" v-if="contatti.visible === true">
                 <img class="avatar" :src="'img/avatar' + contatti.avatar + '.jpg'" alt="">
                 <div>
                   {{contatti.name}}<br>
@@ -67,32 +76,41 @@
                 <i :class="icone.setting"></i>
               </div>
             </div>
-            <div class="chat">
-              <div v-for="(prop, ind) in contacts" v-if="prop.visible === true">
+
+            <div class="chat flex">
+              <div v-for="(prop, ind) in contacts" v-if="prop.visible === true" class="flex">
                 <div v-for="(mex, ind) in prop.messages" :class="mex.status">
                   {{mex.text}}
                   <span>{{sliceText(mex.date, 11, 16)}}</span>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="footer">
-            <div class="footer-left">
+          </main>
+          <!-- / main -->
+          <!-- footer -->
+          <footer class="fl flex flex-align-center">
+
+            <div class="footer-left flex flex-align-center">
               <i :class="icone.smile"></i>
             </div>
-            <div class="footer-center">
+
+            <div class="footer-center flex flex-align-center">
               <input type="text" placeholder="Scrivi un messaggio" v-model="nuovoMessaggio" @keyup.enter="aggiungiMessaggio">
             </div>
-            <div class="footer-right">
+
+            <div class="footer-right flex flex-align-center">
               <i :class="icone.microfono"></i>
             </div>
-          </div>
+
+          </footer>
+          <!-- / footer -->
         </div>
       </div>
+      
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="js/script.js" charset="utf-8"></script>
+    <script src="script.js" charset="utf-8"></script>
   </body>
 </html>
